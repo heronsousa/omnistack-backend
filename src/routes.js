@@ -14,5 +14,6 @@ routes.post('/posts', upload.single('image'), PostController.store);
 routes.post('/posts/:id/like', LikeController.store);
 
 routes.post('/register', AuthController.index);
+routes.post('/auth', AuthController.auth);
 
 module.exports = routes;
