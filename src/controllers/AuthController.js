@@ -4,6 +4,12 @@ const jwt = require('jsonwebtoken');
 
 const authConfig = require('../config/auth');
 
+function generateToken(params = {}){
+    return jwt.sign(params, authConfig.secret,{
+        expiresIn: 84600
+    });
+}
+
 module.exports = {
     async index (req, res) {
 
@@ -15,7 +21,10 @@ module.exports = {
 
             const user = await User.create(req.body);
             
-            return res.send(user);
+            return res.send({
+                user, 
+                token: generateToken({id: user.id})
+            });
         } catch(err) {
             return res.status(400).send({ error: 'Registro de usuário falhou!' })
         }
@@ -35,10 +44,11 @@ module.exports = {
 
         user.password = undefined;
 
-        const token = jwt.sign({ id: user.id }, authConfig.secret,{
-            expiresIn: 84600
-        });
+        
 
-        res.send({ user, token });
+        res.send({ 
+            user, 
+            token: generateToken({id: user.id})
+        });
     }
 }
