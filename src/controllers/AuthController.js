@@ -1,5 +1,8 @@
 const User = require('../models/UserModel');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const authConfig = require('../config/auth');
 
 module.exports = {
     async index (req, res) {
@@ -11,8 +14,6 @@ module.exports = {
                 return res.status(400).send({ error: 'Usuário já existe' });
 
             const user = await User.create(req.body);
-
-            user.password = undefined;
             
             return res.send(user);
         } catch(err) {
@@ -32,6 +33,12 @@ module.exports = {
         if(!await bcrypt.compare(password, user.password))
             return res.status(400).send({ error: 'Senha inválida' });
 
-        res.send({ user });
+        user.password = undefined;
+
+        const token = jwt.sign({ id: user.id }, authConfig.secret,{
+            expiresIn: 84600
+        });
+
+        res.send({ user, token });
     }
 }
