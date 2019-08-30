@@ -26,6 +26,5 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads', 'resized')));
 app.use(require('./routes'));
-// app.use(express.json());
 
 server.listen(process.env.PORT || 3333)
