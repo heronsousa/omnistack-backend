@@ -44,8 +44,6 @@ module.exports = {
 
         user.password = undefined;
 
-        
-
         res.send({ 
             user, 
             token: generateToken({id: user.id})

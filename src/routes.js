@@ -3,6 +3,7 @@ const multer = require('multer');
 const PostController = require('./controllers/PostController');
 const LikeController = require('./controllers/LikeController');
 const AuthController = require('./controllers/AuthController');
+const ProjectController = require('./controllers/ProjectController');
 const UploadConfig = require('./config/Upload');
 
 const routes = new express.Router();
@@ -15,5 +16,7 @@ routes.post('/posts/:id/like', LikeController.store);
 
 routes.post('/register', AuthController.index);
 routes.post('/auth', AuthController.auth);
+
+routes.get('/project', ProjectController.index);
 
 module.exports = routes;
